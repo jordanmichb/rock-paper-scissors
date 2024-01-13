@@ -14,19 +14,20 @@ function playRound(playerSelection, computerSelection) {
     console.log(`You chose ${playerSelection}.`);
     console.log(`The computer chose ${computerSelection}.`);
 
-    switch (computerSelection) {
+    switch (playerSelection) {
         case "Rock":
-            if (playerSelection == "Rock") { return tie }
-            else if (playerSelection == "Paper") { return win}
-            else if (playerSelection == "Scissors") { return lose };
+            if (computerSelection == "Rock") { return tie }
+            else if (computerSelection == "Paper") { return lose}
+            else if (computerSelection == "Scissors") { return win };
         case "Paper":
-            if (playerSelection == "Rock") { return lose }
-            else if (playerSelection == "Paper") { return tie}
-            else if (playerSelection == "Scissors") { return win };
+            if (computerSelection == "Rock") { return win }
+            else if (computerSelection == "Paper") { return tie}
+            else if (computerSelection == "Scissors") { return lose };
         case "Scissors":
-            if (playerSelection == "Rock") { return win }
-            else if (playerSelection == "Paper") { return lose}
-            else if (playerSelection == "Scissors") { return tie };
+            if (computerSelection == "Rock") { return lose }
+            else if (computerSelection == "Paper") { return win}
+            else if (computerSelection == "Scissors") { return tie };
+        default:
+            return "Invalid input.";
     }
-    
 }
