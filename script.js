@@ -7,26 +7,27 @@ function getComputerChoice() {
 
 function getPlayerChoice() {
     let choice = prompt("Choose rock, paper, or scissors.");
-    
-    if (choice != null) {
-        // Format player choice so case doesn't matter
-        choice = choice.charAt(0).toUpperCase() + choice.slice(1).toLowerCase()
-        while (!choices.includes(choice)) {
-            choice = prompt("Invalid choice, please try again.");
-            if (choice == null) { return choice };
-        }
-    }
 
+    if (choice === null) { return choice };  // Prompt was cancelled
+
+    choice = choice.charAt(0).toUpperCase() + choice.slice(1).toLowerCase();
+
+    while (!choices.includes(choice)) {
+        choice = prompt("Invalid choice, please try again.");
+        if (choice == null) { return choice };
+        choice = choice.charAt(0).toUpperCase() + choice.slice(1).toLowerCase();
+    }
+    
     return choice;
 }
 
-function getNumberOfGames() {
-    let num = Number(prompt("How many games would you like to play? Enter a positive number."));
+function getGamesToWin() {
+    let num = Number(prompt("What will the winning score be? Enter a positive number."));
 
     // If number is invalid, continue to promp
     while (isNaN(num) || num < 0) {
         num = Number(prompt("Invalid number, please try again."));
-        if (num == 0) { return num }
+        if (num == 0) { return num }; // Prompt was cancelled
     }
 
     return num;
@@ -59,18 +60,20 @@ function playRound(playerChoice, computerChoice) {
 }
 
 function game() {
-    const numGames = getNumberOfGames();
-    // Stop game if player chose "Cancel"
-    if (numGames === null || numGames === 0) { return };
+    const winScore = getGamesToWin();
+    if (winScore === null || winScore === 0) { return }; // Stop game if player chose "Cancel"
     
-    let i, playerWins = 0, computerWins = 0, tieGames = 0;
+    let totalGames = 0, playerWins = 0, computerWins = 0, tieGames = 0;
 
-    for (i = 0; i < numGames; i++) {
+    while (playerWins < winScore && computerWins < winScore) {
+
         const playerChoice = getPlayerChoice();
-        // Stop game if player chose "Cancel"
-        if (playerChoice === null) { break };
+        if (playerChoice === null) { break }; // Stop game if player chose "Cancel" in prompt box
+
         const computerChoice = getComputerChoice();
+
         const roundResult = playRound(playerChoice, computerChoice);
+        totalGames++;
 
         switch (roundResult) {
             case "win":
@@ -93,7 +96,7 @@ function game() {
         }
     }
 
-    console.log(`Games played: ${i}`);
+    console.log(`Games played: ${totalGames}`);
     console.log(`Score:\n\tPlayer: ${playerWins}\n\tComputer: ${computerWins}\n\tTies: ${tieGames}`);
 
     if (playerWins > computerWins) { console.log("Congratulations! You win the game.") }
