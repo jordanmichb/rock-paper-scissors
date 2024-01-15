@@ -2,4 +2,4 @@
 
 ## Project: Rock, Paper, Scissors
 
-A simple rock, paper, scissors game designed to be played within the console.
+A rock, paper, scissors game designed with HTML, CSS, and JavaScript.
