@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 5em;
+    height: 100vh;
+
+}
+
+h1 {
+    border: 1px solid black;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.gameboard {
+    border: 1px solid black;
+    border-radius: 20px;
+    margin: 0 auto;
+    max-width: 1500px;
+    padding: 5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #9ab5c5;
+}
+
+.gamepieces {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.gamepieces > img {
+    padding: 1em;
+    width: 200px;
+    height: auto;
+    transition: transform 1s ease-in-out;
+    border: 2px solid #9ab5c5;
+}
+
+#paper {
+    padding: 1.5em;
+}
+
+.gamepieces > img:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+    transition: transform 1s ease-in-out;
+}
+
+/* Class for toggling border on selected gamepiece choice  */
+.selected {
+    border: 2px solid blue !important;
+    border-radius: 20px;
+}
+
+button {
+    margin: 5em auto;
+    padding: .5em 2em;
+}
+
+footer {
+    border: 1px solid black;
+    background-color: red;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 256px;
+}
+
+@media(max-width: 950px) {
+    .gamepieces > img {
+        width: 150px;
+    }
+}

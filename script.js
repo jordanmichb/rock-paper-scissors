@@ -60,17 +60,17 @@ function playRound(playerChoice, computerChoice) {
 }
 
 function game() {
-    //const winScore = getGamesToWin();
+    const winScore = getGamesToWin();
     if (winScore === null || winScore === 0) { return }; // Stop game if player chose "Cancel"
     
     let totalGames = 0, playerWins = 0, computerWins = 0, tieGames = 0;
 
     while (playerWins < winScore && computerWins < winScore) {
 
-        //const playerChoice = getPlayerChoice();
+        const playerChoice = getPlayerChoice();
         if (playerChoice === null) { break }; // Stop game if player chose "Cancel" in prompt box
 
-        //const computerChoice = getComputerChoice();
+        const computerChoice = getComputerChoice();
 
         const roundResult = playRound(playerChoice, computerChoice);
         totalGames++;
@@ -104,4 +104,19 @@ function game() {
     else { console.log("Tie game!") };
 }
 
-game();
+
+const pieces = document.querySelectorAll('.piece');
+
+pieces.forEach(piece => {
+    piece.addEventListener('click', (e) => {
+        if (e.target.classList.contains('selected')) { e.target.classList.toggle('selected') }
+        else {
+            pieces.forEach(piece => {
+                piece.classList.remove('selected');
+            })
+            e.target.classList.toggle('selected');
+        };
+    });
+});
+
+//game();
