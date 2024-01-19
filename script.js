@@ -1,4 +1,5 @@
 const choices = ["rock", "paper", "scissors"];
+let gameRunning = false;
 
 function getComputerChoice() {
     const computerChoice = Math.floor(Math.random() * 3); // Randomly choose either 0, 1, or 2
@@ -129,9 +130,10 @@ function cycleAndChoose(element, idx = 0, cycles = 0) {
     if (cycles >= 30) {
         const choice = getComputerChoice();
         element.setAttribute('src', `./images/${choice}.png`);
+        gameRunning = false;
         return;
     }
-
+    gameRunning = true;
     element.setAttribute('src', `./images/${choices[idx]}.png`);
     idx = idx === choices.length - 1 ? 0 : ++idx;
     cycles++;
@@ -145,27 +147,30 @@ function playRound() {
             selected = piece.id;
         }
     });
-    console.log(selected)
 
     if (selected) {
+        document.querySelectorAll(".in-play").forEach((el) => arena.removeChild(el));
         const player = document.createElement('img');
         player.setAttribute('src', `./images/${selected}.png`);
         player.classList.add('piece');
+        player.classList.add('in-play');
         arena.appendChild(player);
         
         const computer = document.createElement('img');
         computer.setAttribute('src', './images/rock.png');
         computer.classList.add('piece');
+        computer.classList.add('in-play');
         arena.appendChild(computer);
 
         cycleAndChoose(computer);
     }
+
 }
 
 const btn = document.querySelector('#play');
 const arena = document.querySelector('.arena');
 btn.addEventListener('click', () => {
-    playRound();
+    if (!gameRunning) playRound();
 });
 
 //game();
