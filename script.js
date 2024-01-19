@@ -1,4 +1,4 @@
-const choices = ["Rock", "Paper", "Scissors"];
+const choices = ["rock", "paper", "scissors"];
 
 function getComputerChoice() {
     const computerChoice = Math.floor(Math.random() * 3); // Randomly choose either 0, 1, or 2
@@ -32,7 +32,7 @@ function getGamesToWin() {
 
     return num;
 }
-
+/*
 function playRound(playerChoice, computerChoice) {
     const tie = "tie";
     const win = "win";
@@ -58,7 +58,7 @@ function playRound(playerChoice, computerChoice) {
             return;
     }
 }
-
+*/
 function game() {
     const winScore = getGamesToWin();
     if (winScore === null || winScore === 0) { return }; // Stop game if player chose "Cancel"
@@ -104,19 +104,68 @@ function game() {
     else { console.log("Tie game!") };
 }
 
-
+// When a gamepiece is clicked, remove border from all pieces then, add border to selection,
+// and updated the selected piece
 const pieces = document.querySelectorAll('.piece');
-
 pieces.forEach(piece => {
     piece.addEventListener('click', (e) => {
-        if (e.target.classList.contains('selected')) { e.target.classList.toggle('selected') }
+        // Remove border if clicked piece is already selected
+        if (e.target.classList.contains('selected')) { 
+            e.target.classList.toggle('selected');
+            selected = '';
+        }
         else {
             pieces.forEach(piece => {
                 piece.classList.remove('selected');
             })
             e.target.classList.toggle('selected');
+            selected = e.target.id;
         };
     });
+});
+
+//
+function cycleAndChoose(element, idx = 0, cycles = 0) {
+    if (cycles >= 30) {
+        const choice = getComputerChoice();
+        element.setAttribute('src', `./images/${choice}.png`);
+        return;
+    }
+
+    element.setAttribute('src', `./images/${choices[idx]}.png`);
+    idx = idx === choices.length - 1 ? 0 : ++idx;
+    cycles++;
+    setTimeout(cycleAndChoose, 50, element, idx, cycles);
+}
+
+function playRound() {
+    let selected = '';
+    pieces.forEach(piece => {
+        if (piece.classList.contains('selected')) {
+            selected = piece.id;
+        }
+    });
+    console.log(selected)
+
+    if (selected) {
+        const player = document.createElement('img');
+        player.setAttribute('src', `./images/${selected}.png`);
+        player.classList.add('piece');
+        arena.appendChild(player);
+        
+        const computer = document.createElement('img');
+        computer.setAttribute('src', './images/rock.png');
+        computer.classList.add('piece');
+        arena.appendChild(computer);
+
+        cycleAndChoose(computer);
+    }
+}
+
+const btn = document.querySelector('#play');
+const arena = document.querySelector('.arena');
+btn.addEventListener('click', () => {
+    playRound();
 });
 
 //game();
