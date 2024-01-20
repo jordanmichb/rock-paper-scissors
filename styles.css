@@ -16,6 +16,7 @@ body {
 
 h1 {
     border: 1px solid black;
+    font-size: 2rem;
     text-align: center;
     margin-bottom: 3em;
 }
@@ -35,20 +36,22 @@ h1 {
 .gamepieces {
     display: flex;
     gap: 7em;
+    margin-bottom: 5em;
 }
 
 .gamepieces > img {
     transition: transform .5s ease-in-out;
-    /*border: 2px solid #9ab5c5;*/
 }
 
 .piece {
     padding: 1em;
-    width: 200px;
+    width: 180px;
     height: auto;
+    filter:drop-shadow(0px 10px 5px #757575df);
+    /*box-shadow: 0px 10px 0px #555555b3;*/
 }
 
-#paper {
+.paper {
     padding: 1.5em;
 }
 
@@ -64,8 +67,44 @@ h1 {
     border-radius: 20px;
 }
 
+.winning-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+#num-rounds {
+    margin: 2em auto 3em auto;
+    width: 3em;
+    height: 3em;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border:solid 1px #ccc;
+    border-radius: 10px;
+    text-align: center
+}
+
+#num-rounds:focus {
+    outline: none;
+}
+
+/* Hide arrows and spinners in input box */
+/* Chrome, Safari, Edge, Opera */
+#num-rounds::-webkit-outer-spin-button,
+#num-rounds::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+#num-rounds {
+  appearance: textfield;
+}
+
 button {
-    margin: 5em auto;
+    margin-bottom: 5em;
     padding: .5em 2em;
 }
 
@@ -73,8 +112,26 @@ button:hover {
     cursor: pointer;
 }
 
+.scoreboard {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 5em;
+}
+
+.score {
+    font-size: 1.5rem;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+}
+
 .arena {
-    border: 1px solid;
+
+}
+
+#player-piece {
+    margin-right: 7em;
 }
 
 footer {
@@ -86,11 +143,41 @@ footer {
     width: 100%;
 }
 
+
+.overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000000b3;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 500ms;
+}
+
+.popup {
+    width: 500px;
+    height: 500px;
+    background-color: blue;
+}
+
+
+
+
+
+
 @media(max-width: 950px) {
     .gamepieces {
         gap: 3em;
     }
-    .gamepieces > img {
+    .piece {
         width: 150px;
+    }
+    #player {
+        margin-right: 3em !important;
     }
 }

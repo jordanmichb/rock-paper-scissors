@@ -1,9 +1,10 @@
 const choices = ["rock", "paper", "scissors"];
+let winScore = 1, playerScore = 0, computerScore = 0, tieScore = 0;
 let gameRunning = false;
 
 function getComputerChoice() {
-    const computerChoice = Math.floor(Math.random() * 3); // Randomly choose either 0, 1, or 2
-    return choices[computerChoice]; // Return random choice from the list
+    // Return random choice from the list by selecting choices[1] [2] or [3]
+    return choices[Math.floor(Math.random() * 3)]; 
 }
 
 function getPlayerChoice() {
@@ -59,7 +60,7 @@ function playRound(playerChoice, computerChoice) {
             return;
     }
 }
-*/
+
 function game() {
     const winScore = getGamesToWin();
     if (winScore === null || winScore === 0) { return }; // Stop game if player chose "Cancel"
@@ -103,11 +104,11 @@ function game() {
     if (playerWins > computerWins) { console.log("Congratulations! You win the game.") }
     else if (playerWins < computerWins) { console.log("Sorry! You lost the game.") }
     else { console.log("Tie game!") };
-}
+}*/
 
 // When a gamepiece is clicked, remove border from all pieces then, add border to selection,
 // and updated the selected piece
-const pieces = document.querySelectorAll('.piece');
+const pieces = document.querySelectorAll('.choice');
 pieces.forEach(piece => {
     piece.addEventListener('click', (e) => {
         // Remove border if clicked piece is already selected
@@ -125,52 +126,150 @@ pieces.forEach(piece => {
     });
 });
 
-//
-function cycleAndChoose(element, idx = 0, cycles = 0) {
-    if (cycles >= 30) {
-        const choice = getComputerChoice();
-        element.setAttribute('src', `./images/${choice}.png`);
-        gameRunning = false;
-        return;
-    }
-    gameRunning = true;
-    element.setAttribute('src', `./images/${choices[idx]}.png`);
-    idx = idx === choices.length - 1 ? 0 : ++idx;
-    cycles++;
-    setTimeout(cycleAndChoose, 50, element, idx, cycles);
+// Cycles through all choices in a roulette, then randomly selescts computer's choice
+// Return as promise to ensure this finishes before next step
+function cycleAndChoose(element, i, cycles) {
+    return new Promise((resolve, reject) => {
+        gameRunning = true;
+        element.setAttribute('src', `./images/${choices[i]}.png`);
+        i = i === choices.length - 1 ? 0 : ++i;
+        cycles++;
+        if (cycles >= 30) {
+            const choice = getComputerChoice();
+            element.setAttribute('src', `./images/${choice}.png`);
+            gameRunning = false;
+            resolve(choice);
+        }
+        else {
+            // Timeout is what gives roulette effect and necessitates promise (asynchronous)
+            setTimeout(() => {reject([i, cycles])}, 50);
+        }
+    });
 }
 
+function checkGameIsOver(reset = false) {
+    if (reset) {
+        
+    }
+    if (playerScore >= winScore || computerScore >= winScore) {
+        numRounds.removeAttribute('disabled');
+
+        const popup = document.querySelector(".overlay");
+        popup.style.opacity = "1";
+        popup.style.visibility = "visible";
+        
+        if (computerScore > playerScore) { 
+            document.querySelector("#p-head1").textContent = "Sorry!";
+            document.querySelector("#p-text1").textContent =  "You lost this one. Would you like to try again?"
+        }
+        //else if (playerWins < computerWins) { console.log("Sorry! You lost the game.") }
+        //else { console.log("Tie game!") };
+    }
+    
+}
+
+function showPopup() {
+    
+}
+
+function updateScore(playerChoice, computerChoice) {
+    const playerScoreText = document.querySelector("#player-score");
+    const tieScoreText = document.querySelector("#tie-score");
+    const computerScoreText = document.querySelector("#computer-score");
+
+    switch (playerChoice) {
+        case "rock":
+            if (computerChoice == "rock") { tieScore++ }
+            else if (computerChoice == "paper") { computerScore++ }
+            else if (computerChoice == "scissors") { playerScore++ };
+            break;
+        case "paper":
+            if (computerChoice == "rock") { playerScore++ }
+            else if (computerChoice == "paper") { tieScore++ }
+            else if (computerChoice == "scissors") { computerScore++ };
+            break;
+        case "scissors":
+            if (computerChoice == "rock") { computerScore++ }
+            else if (computerChoice == "paper") { playerScore++ }
+            else if (computerChoice == "scissors") { tieScore++ };
+            break;
+        default:
+            break;
+    }
+
+    playerScoreText.textContent = `Player Score: ${playerScore}`;
+    tieScoreText.textContent = `Tie Games: ${tieScore}`;
+    computerScoreText.textContent = `Computer Score: ${computerScore}`;
+
+}
+
+
 function playRound() {
-    let selected = '';
+    let playerChoice = '';
+    console.log(winScore)
+
     pieces.forEach(piece => {
         if (piece.classList.contains('selected')) {
-            selected = piece.id;
+            playerChoice = piece.id;
         }
     });
 
-    if (selected) {
+    if (playerChoice) {
+        numRounds.setAttribute('disabled', 'true');
+        // Get rid of last round's pieces
         document.querySelectorAll(".in-play").forEach((el) => arena.removeChild(el));
+        
         const player = document.createElement('img');
-        player.setAttribute('src', `./images/${selected}.png`);
+        player.setAttribute('src', `./images/${playerChoice}.png`);
+        player.setAttribute('id', 'player-piece');
         player.classList.add('piece');
         player.classList.add('in-play');
+        player.style.marginRight = '7em';
+        if (playerChoice === "paper") player.classList.add('paper');
         arena.appendChild(player);
-        
+
         const computer = document.createElement('img');
         computer.setAttribute('src', './images/rock.png');
         computer.classList.add('piece');
         computer.classList.add('in-play');
         arena.appendChild(computer);
+       
+        // Try and fulfill cycleAndChoose promise. Continue trying until resolved, at
+        // which point the computer's choice has been made and the game can be scored
+        const cycle = (computer, i = 0, cycles = 0) => {
+            cycleAndChoose(computer, i, cycles).then(computerChoice => {
+                if (computerChoice === "paper") computer.classList.add('paper');
 
-        cycleAndChoose(computer);
+                updateScore(playerChoice, computerChoice);
+                checkGameIsOver();
+                
+                
+            }).catch((vals) => { 
+                cycle(computer, vals[0], vals[1]) 
+            });
+        }
+        cycle(computer);
     }
+    btn.removeAttribute('disabled');
+    
 
 }
 
 const btn = document.querySelector('#play');
 const arena = document.querySelector('.arena');
+const numRounds = document.querySelector('#num-rounds');
 btn.addEventListener('click', () => {
-    if (!gameRunning) playRound();
+    //if (!gameRunning) playRound();
+    winScore = document.querySelector("#num-rounds").value;
+    btn.setAttribute('disabled', 'true');
+    playRound();
+
 });
 
 //game();
+
+/*
+myInput.oninput = function () {
+    if (this.value.length > 2)
+        this.value = this.value.slice(0,2); 
+}*/
