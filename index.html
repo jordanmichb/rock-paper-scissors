@@ -3,43 +3,41 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Rock, Paper, Scissors</title>
         <link rel="stylesheet" href="styles.css">
         <script src="./script.js" defer></script>
     </head>
     <body>
         <h1 class="title">Rock, Paper, Scissors</h1>
-        <!-- <section class="gameboard"> -->
             <div class="gamepieces">
                 <img id="rock" class="piece choice" src="./images/rock.png" alt="A rock">
                 <img id="paper" class="paper piece choice" src="./images/paper.png" alt="A piece of paper">
                 <img id="scissors" class="piece choice" src="./images/scissors.png" alt="A pair of scissors">
             </div>
-            <div class="winning-score">
-                What will the winning score be?
-                <input id="num-rounds" type="number" value="5" min="1" max="100" maxlength="3">
-            </div>
-            <div>
-                <button id="play">Play Round</button>
-                <button id="reset">Reset Game</button>
+            <div class="controls">
+                <div class="input">
+                    <button id="play">Play Round</button>
+                    <input id="num-rounds" type="number" value="5" min="1" max="100" maxlength="3">
+                    <button id="reset">Reset Game</button>
+                </div>
+                Number of Rounds
             </div>
             <div class="scoreboard">
-                <div id="player-score" class="score">Player Score: 0</div>
-                <div id="tie-score" class="score">Tie Games: 0</div>
-                <div id="computer-score" class="score">Computer Score: 0</div>
+                <div class="score">Player Score:<span id="player-score" class="score-num">0</span></div>
+                <div class="score">Tie Games:<span id="tie-score" class="score-num">0</span></div>
+                <div class="score">Computer Score:<span id="computer-score" class="score-num">0</span></div>
             </div>
             <div class="arena">
                 <img id="player-piece" class="piece in-play" src="./images/blank.png" alt="A rock">
                 <img id="computer-piece" class="piece in-play" src="./images/blank.png" alt="A rock">
             </div>
-            <div class="overlay">
+            <div id="popup1" class="overlay">
                 <div class="popup">
-                    <h2 id="p-head1" class="popup-head"> Congratulations!</h2>
-                    <p id="p-text1" class="popup-text">You have won Rock, Paper, Scissors!</p>
-                    <button class="popup-button">Play Again</button>
+                    <h2 id="p-head1" class="popup-head"></h2>
+                    <p id="p-text1" class="popup-text"></p>
+                    <button id ="p-btn1" class="popup-button">Play Again</button>
                 </div>
             </div>
-        <!--</section>-->
         <footer>x</footer>
     </body>
 </html>

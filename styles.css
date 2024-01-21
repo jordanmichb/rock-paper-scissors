@@ -1,38 +1,51 @@
+:root {
+    --box-shadow-color: #b8ffb5;
+    --font-color: #2a2a2a;
+}
+
+@font-face {
+    font-family: Lato;
+    src: url('./fonts/Lato/Lato-Regular.ttf');
+}
+
+@font-face {
+    font-family: Rubik;
+    src: url('./fonts/Rubik_Doodle_Shadow/RubikDoodleShadow-Regular.ttf');
+}
+
+@font-face {
+    font-family: Shirkand;
+    src: url('./fonts/Shrikhand/Shrikhand-Regular.ttf');
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Lato, sans-serif;
 }
 
 body {
     padding: 5em;
     height: 100vh;
+    width: 100vw;
     margin: 0 auto;
-    background-color: #9ab5c5;
+    background: radial-gradient(#9ab5c5 20%, transparent);
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: var(--font-color);
 }
 
 h1 {
-    border: 1px solid black;
-    font-size: 2rem;
+    font-family: Shirkand, serif;
+    letter-spacing: .1em;
+    font-size: 3rem;
     text-align: center;
     margin-bottom: 3em;
 }
-/*
-.gameboard {
-    border: 1px solid black;
-    border-radius: 20px;
-    margin: 0 auto;
-    max-width: 1500px;
-    padding: 5em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #9ab5c5;
-}
-*/
+
 .gamepieces {
     display: flex;
     gap: 7em;
@@ -47,8 +60,7 @@ h1 {
     padding: 1em;
     width: 180px;
     height: auto;
-    filter:drop-shadow(0px 10px 5px #757575df);
-    /*box-shadow: 0px 10px 0px #555555b3;*/
+    filter: drop-shadow(0px 10px 5px #757575df);
 }
 
 .paper {
@@ -63,28 +75,36 @@ h1 {
 
 /* Class for toggling border on selected gamepiece choice  */
 .selected {
-    outline: 2px solid blue !important;
+    border: 1px solid white;
     border-radius: 20px;
+    box-shadow: 0px 0px 10px var(--box-shadow-color),  inset 0px 0px 10px var(--box-shadow-color);
 }
 
-.winning-score {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.controls {
+    text-align: center;
     font-size: 1.1rem;
-    border-radius: 10px;
+    margin-bottom: 5em;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.input {
+    margin-bottom: .5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7em;
 }
 
 #num-rounds {
-    margin: 2em auto 3em auto;
     width: 3em;
     height: 3em;
     font-size: 1.1rem;
-    font-weight: bold;
     border: none;
-    border:solid 1px #ccc;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    text-align: center
+    text-align: center;
+    color: var(--font-color);
 }
 
 #num-rounds:focus {
@@ -104,18 +124,28 @@ h1 {
 }
 
 button {
-    margin-bottom: 5em;
-    padding: .5em 2em;
+    font-size: 1.1rem;
+    color: var(--font-color);
+    padding: .5em 3em;
+    background-color: #faf4f4;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0px 0px 20px var(--box-shadow-color),  inset 0px 0px 10px var(--box-shadow-color);
 }
 
 button:hover {
     cursor: pointer;
 }
 
+button:disabled {
+    background-color: #e7e1e1;
+    box-shadow: 0px 0px 10px gray,  inset 0px 0px 10px gray;
+}
+
 .scoreboard {
     display: flex;
     width: 100%;
-    justify-content: center;
+    max-width: 1000px;
     margin-bottom: 5em;
 }
 
@@ -126,12 +156,15 @@ button:hover {
     text-align: center;
 }
 
-.arena {
-
+.score-num {
+    margin-left: 1.5em;
 }
 
-#player-piece {
-    margin-right: 7em;
+.arena {
+    display: flex;
+    gap: 6em;
+    justify-content: center;
+    align-items: center;
 }
 
 footer {
@@ -142,7 +175,6 @@ footer {
     left: 0;
     width: 100%;
 }
-
 
 .overlay {
     display: flex;
@@ -156,28 +188,80 @@ footer {
     background: #000000b3;
     visibility: hidden;
     opacity: 0;
-    transition: opacity 500ms;
+    transition: opacity 1000ms;
 }
 
 .popup {
-    width: 500px;
-    height: 500px;
-    background-color: blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3em;
+    background-color: #e0e1dd;
+    padding: 3em 6em;
+    border: 3px solid #b8ffb5;
+    border-radius: 10px;
 }
 
-
-
-
-
-
 @media(max-width: 950px) {
+    h1 {
+        font-size: 2rem;
+    }
+    button, .controls {
+        font-size: .9rem;
+    }
+    .score {
+        font-size: 1.1rem;
+    }
     .gamepieces {
         gap: 3em;
     }
     .piece {
+        width: 175px;
+    }
+    .popup {
+        gap: 2em;
+        padding: 2em 4em;
+    }
+}
+
+@media(max-width: 600px) {
+    body {
+        padding: 3em;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    .gamepieces {
+        gap: 1em;
+    }
+    button, .controls {
+        font-size: .8rem;
+    }
+    button {
+        padding: .3em 1em;
+    }
+    #num-rounds {
+        width: 2.5em;
+        height: 2.5em;
+        font-size: .9rem;
+    }
+    .score {
+        font-size: .9rem;
+    }
+    .piece {
         width: 150px;
     }
-    #player {
-        margin-right: 3em !important;
+    .input {
+        gap: 4em;
+    }
+    h1, .scoreboard, .gamepieces {
+        margin-bottom: 1em;
+    }
+    .arena {
+        gap: 2em;
+    }
+    .popup {
+        gap: 1em;
+        padding: 1em 2em;
     }
 }
