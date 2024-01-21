@@ -74,8 +74,9 @@ h1 {
 }
 
 /* Class for toggling border on selected gamepiece choice  */
+/* Use outline instead of border to avoid changing size on click */
 .selected {
-    border: 1px solid white;
+    outline: 1px solid white;
     border-radius: 20px;
     box-shadow: 0px 0px 10px var(--box-shadow-color),  inset 0px 0px 10px var(--box-shadow-color);
 }
@@ -139,7 +140,7 @@ button:hover {
 
 button:disabled {
     background-color: #e7e1e1;
-    box-shadow: 0px 0px 10px gray,  inset 0px 0px 10px gray;
+    box-shadow: 0px 0px 0px gray,  inset 0px 0px 5px gray;
 }
 
 .scoreboard {
